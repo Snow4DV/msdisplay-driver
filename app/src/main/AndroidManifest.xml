@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:versionCode="1"
+    android:versionName="2.0.1.3"
+    package="com.ms.ms2160">
+
+
+    <uses-feature android:name="android.hardware.usb.host"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FORCE_STOP_PACKAGES"/>
+    <application
+        android:theme="@style/AppTheme"
+        android:label="@string/app_name"
+        android:icon="@drawable/ic_launcher"
+        android:name="com.ms.ms2160.myapplication.ShotApplication"
+        android:allowBackup="true"
+        android:supportsRtl="true"
+        android:roundIcon="@drawable/ic_launcher">
+        <service
+            android:name="com.ms.ms2160.service.KeepAliveJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:enabled="true"
+            android:exported="true"/>
+        <service
+            android:name="com.ms.ms2160.service.DaemonService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":Daemon"/>
+        <activity android:name="com.ms.ms2160.myapplication.ScreenActivity"/>
+        <activity
+            android:theme="@style/AppTheme.NoActionBar"
+            android:name="com.ms.ms2160.myapplication.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"/>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_DETACHED"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/device_filter"/>
+        </activity>
+        <service
+            android:name="com.ms.ms2160.service.CaptureService"
+            android:enabled="true"
+            android:exported="true"
+            android:priority="1000"/>
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:name="com.ms.ms2160.myapplication.MediaProjectionActivity"/>
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:name="com.ms.ms2160.permission.FloatActivity"/>
+        <activity android:name="com.ms.ms2160.myapplication.SettingActivity"/>
+        <meta-data
+            android:name="android.support.VERSION"
+            android:value="26.1.0"/>
+        <meta-data
+            android:name="android.arch.lifecycle.VERSION"
+            android:value="27.0.0-SNAPSHOT"/>
+    </application>
+</manifest>

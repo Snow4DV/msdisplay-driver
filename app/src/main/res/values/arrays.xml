@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="caputurearr">
+        <item>800*600</item>
+        <item>1280*720</item>
+    </array>
+    <array name="colorarr">
+        <item>Low quality</item>
+        <item>High quality</item>
+    </array>
+    <array name="outputmodearr">
+        <item>VGA</item>
+        <item>HDMI</item>
+    </array>
+    <array name="timingarr">
+        <item>800*600</item>
+        <item>1280*720</item>
+        <item>1920*1080</item>
+    </array>
+</resources>
