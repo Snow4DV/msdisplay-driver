@@ -508,68 +508,36 @@ public final class USBMonitor {
         return z;
     }
 
-    /* JADX WARN: Removed duplicated region for block: B:22:0x0071 A[ADDED_TO_REGION] */
-    /* JADX WARN: Removed duplicated region for block: B:26:0x007a  */
-    /* JADX WARN: Removed duplicated region for block: B:39:0x009e A[Catch: all -> 0x00a6, TRY_LEAVE, TryCatch #1 {, blocks: (B:3:0x0001, B:5:0x001a, B:9:0x0023, B:11:0x004e, B:15:0x005b, B:17:0x0063, B:24:0x0074, B:27:0x007c, B:29:0x0084, B:33:0x0088, B:36:0x0091, B:38:0x009a, B:39:0x009e), top: B:2:0x0001, inners: #0 }] */
-    /*
-        Decompiled incorrectly initially so should be checked. TODO: check this part
-    */
+    // Reused from 0.1.8.3 version
     public synchronized boolean requestPermission(UsbDevice usbDevice) {
-        boolean z;
-        boolean z2;
         Log.v(TAG, "requestPermission:device=" + usbDevice);
-        boolean z3 = false;
+        boolean z = false;
         if (usbDevice == null) {
             Log.v(TAG, "device == null");
             return false;
         }
         Log.v(TAG, String.format("pid = %d vid = %d", Integer.valueOf(usbDevice.getProductId()), Integer.valueOf(usbDevice.getVendorId())));
-        if (usbDevice.getProductId() != 24609 && usbDevice.getProductId() != 37170) {
-            z = false;
-            if (usbDevice.getVendorId() != 21325 && usbDevice.getVendorId() != 13407) {
-                z2 = false;
-                if (z && z2) {
-                    if (isRegistered()) {
-                        processCancel(usbDevice);
+        if (usbDevice.getProductId() == 24609 && usbDevice.getVendorId() == 21325) {
+            if (!isRegistered()) {
+                processCancel(usbDevice);
+            } else {
+                if (usbDevice != null) {
+                    if (this.mUsbManager.hasPermission(usbDevice)) {
+                        processConnect(usbDevice);
                     } else {
-                        if (usbDevice != null) {
-                            if (this.mUsbManager.hasPermission(usbDevice)) {
-                                processConnect(usbDevice);
-                            } else {
-                                try {
-                                    this.mUsbManager.requestPermission(usbDevice, this.mPermissionIntent);
-                                } catch (Exception e) {
-                                    Log.w(TAG, e);
-                                    processCancel(usbDevice);
-                                }
-                            }
-                            return z3;
+                        try {
+                            this.mUsbManager.requestPermission(usbDevice, this.mPermissionIntent);
+                        } catch (Exception e) {
+                            Log.w(TAG, e);
+                            processCancel(usbDevice);
                         }
-                        processCancel(usbDevice);
                     }
-                    z3 = DEBUG;
-                    return z3;
+                    return z;
                 }
-                return false;
+                processCancel(usbDevice);
             }
-            z2 = DEBUG;
-            if (z) {
-                if (isRegistered()) {
-                }
-                z3 = DEBUG;
-                return z3;
-            }
-            return false;
-        }
-        z = DEBUG;
-        if (usbDevice.getVendorId() != 21325) {
-            z2 = false;
-            if (z) {
-            }
-            return false;
-        }
-        z2 = DEBUG;
-        if (z) {
+            z = DEBUG;
+            return z;
         }
         return false;
     }
@@ -598,7 +566,7 @@ public final class USBMonitor {
             public void run() {
                 boolean z;
                 Log.v(USBMonitor.TAG, "processConnect:device=" + usbDevice);
-                UsbControlBlock usbControlBlock = (UsbControlBlock) USBMonitor.this.mCtrlBlocks.get(usbDevice);
+                UsbControlBlock usbControlBlock = USBMonitor.this.mCtrlBlocks.get(usbDevice);
                 if (usbControlBlock == null) {
                     usbControlBlock = new UsbControlBlock(USBMonitor.this, usbDevice);
                     USBMonitor.this.mCtrlBlocks.put(usbDevice, usbControlBlock);

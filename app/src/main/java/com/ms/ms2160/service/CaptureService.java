@@ -238,7 +238,7 @@ public class CaptureService extends Service implements ImageReader.OnImageAvaila
                             while (true) {
                                 if (i2 < usbInterface.getEndpointCount()) {
                                     usbEndpoint = usbInterface.getEndpoint(i2);
-                                    if (usbEndpoint.getAddress() == 4) {
+                                    if (usbEndpoint.getAddress() == 129) { // was 4. TODO look it up
                                         z2 = true;
                                         break;
                                     }
